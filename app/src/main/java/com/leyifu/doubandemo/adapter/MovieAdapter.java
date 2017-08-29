@@ -3,23 +3,23 @@ package com.leyifu.doubandemo.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.View;
 import android.view.ViewGroup;
-
-import com.leyifu.doubandemo.util.ShowUtil;
 
 import java.util.List;
 
 /**
- * Created by hahaha on 2017/8/29 0029.
+ * Created by xingxing on 2017/8/29.
  */
-
-public class MainAdapter extends FragmentPagerAdapter{
+public class MovieAdapter extends FragmentPagerAdapter{
 
     private List<Fragment> fragments;
+    private  List<String> titles;
 
-    public MainAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public MovieAdapter(FragmentManager fm, List<Fragment> fragments, List<String> titles) {
         super(fm);
         this.fragments = fragments;
+        this.titles = titles;
     }
 
     @Override
@@ -35,7 +35,12 @@ public class MainAdapter extends FragmentPagerAdapter{
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
 //        super.destroyItem(container, position, object);
-        ShowUtil.e("destroyItem=",position+"");
-//        container.removeView(((View) object));
+        container.removeView(((View) object));
+
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return titles.get(position);
     }
 }
