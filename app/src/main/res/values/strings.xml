@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">豆瓣App</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hot_movie">热映榜</string>
+    <string name="top250">TOP250</string>
 </resources>
