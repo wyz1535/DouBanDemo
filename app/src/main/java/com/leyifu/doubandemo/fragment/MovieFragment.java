@@ -24,8 +24,6 @@ public class MovieFragment extends Fragment {
     }
 
     private void initView(View view) {
-        
+
     }
-
-
 }
