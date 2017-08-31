@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +41,8 @@ public class HotMovieFragment extends Fragment {
     private SwipeRefreshLayout hot_movie_swipe;
     private RecyclerView hot_movie_recycle_view;
     private HotMovieAdapter hotMovieAdapter;
+    private int widthPixels;
+    private int heightPixels;
 
     Handler handler = new Handler() {
         @Override
@@ -54,14 +55,12 @@ public class HotMovieFragment extends Fragment {
                     hot_movie_recycle_view.setAdapter(hotMovieAdapter);
                     break;
                 case DEFEATED:
-                    ShowUtil.showToast(getActivity(),"数据请求失败");
+                    ShowUtil.toast(getActivity(),"数据请求失败");
                     break;
             }
 
         }
     };
-    private int widthPixels;
-    private int heightPixels;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,8 +80,6 @@ public class HotMovieFragment extends Fragment {
     }
 
     private void init(View view) {
-
-
 
         hot_movie_swipe.setColorSchemeResources(R.color.colorAccent,R.color.black,R.color.colorPrimary);
         widthPixels = getResources().getDisplayMetrics().widthPixels;

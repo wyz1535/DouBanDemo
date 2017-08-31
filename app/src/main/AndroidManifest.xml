@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".acticity.BaseActivity" />
-        <activity android:name=".acticity.SplashActivity"></activity>
+        <activity android:name=".acticity.SplashActivity" />
+        <activity android:name=".acticity.MovieDetialActivity"></activity>
     </application>
 
 </manifest>

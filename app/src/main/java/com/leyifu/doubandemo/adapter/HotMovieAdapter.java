@@ -1,6 +1,7 @@
 package com.leyifu.doubandemo.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.leyifu.doubandemo.R;
+import com.leyifu.doubandemo.acticity.MovieDetialActivity;
 import com.leyifu.doubandemo.bean.hotmovie.SubjectsBean;
 
 import java.util.List;
@@ -35,7 +37,17 @@ public class HotMovieAdapter extends RecyclerView.Adapter<HotMovieAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_hot, null);
-        return new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
+        holder.iv_hot_movie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Intent intent = new Intent(context, MovieDetialActivity.class);
+                intent.putExtra("id", subjects.get(position).getId());
+                context.startActivity(intent);
+            }
+        });
+        return holder;
     }
 
     @Override

@@ -49,7 +49,7 @@ public class MovieFragment extends Fragment implements ViewPager.OnPageChangeLis
     private void init(View view) {
 
         tool_bar = ((Toolbar) getActivity().findViewById(R.id.tool_bar));
-//        ((AppCompatActivity)getActivity()).setSupportActionBar(tool_bar);
+//        ((AppCompatActivity)getActivity()).setSuppomainrtActionBar(tool_bar);
         //获取toolbar宽高
         int w = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
         int h = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);

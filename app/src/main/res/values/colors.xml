@@ -7,5 +7,6 @@
     <color name="black" >#000000</color>
     <color name="black01" >#333333</color>
     <color name="black02" >#666666</color>
+    <color name="detail_background" >#D1D1D1</color>
 
 </resources>
