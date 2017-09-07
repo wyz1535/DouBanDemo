@@ -12,7 +12,7 @@ public class DirectorsBean {
      */
 
     private String alt;
-    private AvatarsBeanX avatars;
+    private AvatarsBean avatars;
     private String id;
     private String name;
 
@@ -24,11 +24,11 @@ public class DirectorsBean {
         this.alt = alt;
     }
 
-    public AvatarsBeanX getAvatars() {
+    public AvatarsBean getAvatars() {
         return avatars;
     }
 
-    public void setAvatars(AvatarsBeanX avatars) {
+    public void setAvatars(AvatarsBean avatars) {
         this.avatars = avatars;
     }
 

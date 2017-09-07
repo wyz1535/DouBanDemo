@@ -1,12 +1,20 @@
 package com.leyifu.doubandemo.acticity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,12 +22,16 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.leyifu.doubandemo.R;
 import com.leyifu.doubandemo.adapter.CastsDetailAdapter;
+import com.leyifu.doubandemo.bean.hotmoviedetail.CastsBean;
+import com.leyifu.doubandemo.bean.hotmoviedetail.DirectorsBean;
 import com.leyifu.doubandemo.bean.hotmoviedetail.HotMovieDetailBean;
+import com.leyifu.doubandemo.bean.hotmoviedetail.MoviePeopleBean;
 import com.leyifu.doubandemo.constant.Constants;
 import com.leyifu.doubandemo.util.HttpUtil;
 import com.leyifu.doubandemo.util.ShowUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -44,6 +56,8 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
     private TextView tv_detail_introduce;
     private ListView lv_detail_person;
     private TextView tv_click_more;
+
+    List<MoviePeopleBean> moviePeopleList = new ArrayList<>();
 
     Handler handler = new Handler() {
         @Override
@@ -78,9 +92,13 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
                         }
                     }
                     tv_detail_county.setText(strCountries);
-                    tv_detail_origin_name.setText(hotMovieDetailBean.getOriginal_title()+"[原名]");
+                    tv_detail_origin_name.setText(hotMovieDetailBean.getOriginal_title() + "[原名]");
                     tv_detail_introduce.setText(hotMovieDetailBean.getSummary());
-                    lv_detail_person.setAdapter(new CastsDetailAdapter(hotMovieDetailBean.getCasts()));
+
+                    setListViewAdapter();
+                    setListViewHeight(lv_detail_person);
+                    //nestedSrollView 嵌套listview，listview自动获取焦点，
+                    nestedSrollView.smoothScrollTo(0, 0);
                     break;
                 case FAILD:
                     ShowUtil.toast(MovieDetialActivity.this, "请求数据失败");
@@ -88,10 +106,13 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
             }
         }
     };
+
+
     private ImageView iv_item_poster;
     private TextView tv_item_casts_name;
     private TextView tv_item_casts_type;
     private HotMovieDetailBean hotMovieDetailBean;
+    private NestedScrollView nestedSrollView;
 
 
     @Override
@@ -102,6 +123,7 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
         initView();
         initData();
         init();
+        handleMaterialStatusBar();
     }
 
     private void initView() {
@@ -118,6 +140,7 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
         tv_detail_introduce = ((TextView) findViewById(R.id.tv_detail_introduce));
         lv_detail_person = ((ListView) findViewById(R.id.lv_detail_person));
         tv_click_more = ((TextView) findViewById(R.id.tv_click_more));
+        nestedSrollView = ((NestedScrollView) findViewById(R.id.nestedSrollView));
     }
 
     private void init() {
@@ -127,16 +150,6 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
 
         iv_back.setOnClickListener(this);
         tv_click_more.setOnClickListener(this);
-
-//        View head = View.inflate(this, R.layout.item_movie_detail, null);
-//        iv_item_poster = ((ImageView) head.findViewById(R.id.iv_item_poster));
-//        tv_item_casts_name = ((TextView) head.findViewById(R.id.tv_item_casts_name));
-//        tv_item_casts_type = ((TextView) head.findViewById(R.id.tv_item_casts_type));
-//        Glide.with(this).load(hotMovieDetailBean.getDirectors().get(0).getAvatars().getLarge());
-//        tv_item_casts_name.setText(hotMovieDetailBean.getDirectors().get(0).getName());
-//        tv_item_casts_type.setText("[导演]");
-//        lv_detail_person.addHeaderView(head);
-
     }
 
     private void initData() {
@@ -159,7 +172,7 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
                     message.obj = hotMovieDetailBean;
                     handler.sendMessage(message);
                 } else {
-                    ShowUtil.toast(MovieDetialActivity.this,"数据错误");
+                    ShowUtil.toast(MovieDetialActivity.this, "数据错误");
                 }
             }
         });
@@ -172,7 +185,91 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.tv_click_more:
+                Intent intent = new Intent(MovieDetialActivity.this, WebViewActivity.class);
+                intent.putExtra("name", hotMovieDetailBean.getTitle());
+                intent.putExtra("alt", hotMovieDetailBean.getAlt());
+                startActivity(intent);
                 break;
         }
+    }
+
+    private void setListViewAdapter() {
+        if (hotMovieDetailBean.getDirectors() != null && hotMovieDetailBean.getDirectors().size() != 0) {
+            for (int i = 0; i < hotMovieDetailBean.getDirectors().size(); i++) {
+                DirectorsBean directorsBean = hotMovieDetailBean.getDirectors().get(i);
+                MoviePeopleBean moviePeopleBean = new MoviePeopleBean();
+                moviePeopleBean.setAlt(directorsBean.getAlt());
+                moviePeopleBean.setAvatars(directorsBean.getAvatars());
+                moviePeopleBean.setId(directorsBean.getId());
+                moviePeopleBean.setType(1);
+                moviePeopleBean.setName(directorsBean.getName());
+                moviePeopleList.add(moviePeopleBean);
+            }
+        }
+
+        if (hotMovieDetailBean.getCasts() != null && hotMovieDetailBean.getCasts().size() > 0) {
+            for (int i = 0; i < hotMovieDetailBean.getCasts().size(); i++) {
+                CastsBean castsBean = hotMovieDetailBean.getCasts().get(i);
+                MoviePeopleBean moviePeopleBean = new MoviePeopleBean();
+                moviePeopleBean.setAlt(castsBean.getAlt());
+                moviePeopleBean.setAvatars(castsBean.getAvatars());
+                moviePeopleBean.setId(castsBean.getId());
+                moviePeopleBean.setType(2);
+                moviePeopleBean.setName(castsBean.getName());
+                moviePeopleList.add(moviePeopleBean);
+            }
+        }
+        lv_detail_person.setAdapter(new CastsDetailAdapter(moviePeopleList));
+
+        lv_detail_person.setOnItemClickListener(moviePeopelItemClick);
+    }
+
+    AdapterView.OnItemClickListener moviePeopelItemClick = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                if (moviePeopleList.get(i).getType() == 1) {
+            Intent intent = new Intent(MovieDetialActivity.this, WebViewActivity.class);
+            intent.putExtra("name", moviePeopleList.get(i).getName());
+            intent.putExtra("alt", moviePeopleList.get(i).getAlt());
+            startActivity(intent);
+//                } else if (moviePeopleList.get(i).getType() == 2) {
+//
+//                }
+        }
+    };
+
+    public static void setListViewHeight(ListView listView) {
+        if (listView == null) return;
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
+
+    /**
+     * 适配沉浸状态栏
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void handleMaterialStatusBar() {
+        // Not supported in APK level lower than 21
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
+
+        Window window = this.getWindow();
+
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        window.setStatusBarColor(getResources().getColor(R.color.colorAccent02));
     }
 }

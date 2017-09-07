@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.leyifu.doubandemo.R;
-import com.leyifu.doubandemo.bean.hotmoviedetail.CastsBean;
+import com.leyifu.doubandemo.bean.hotmoviedetail.MoviePeopleBean;
 
 import java.util.List;
 
@@ -18,20 +18,20 @@ import java.util.List;
 
 public class CastsDetailAdapter extends BaseAdapter {
 
-    private List<CastsBean> casts;
+    private List<MoviePeopleBean> moviePeopleList;
 
-    public CastsDetailAdapter(List<CastsBean> casts) {
-        this.casts = casts;
+    public CastsDetailAdapter(List<MoviePeopleBean> moviePeopleList) {
+        this.moviePeopleList = moviePeopleList;
     }
 
     @Override
     public int getCount() {
-        return casts == null ? 0 : casts.size();
+        return moviePeopleList == null ? 0 : (moviePeopleList.size());
     }
 
     @Override
     public Object getItem(int i) {
-        return casts.get(i);
+        return moviePeopleList.get(i);
     }
 
     @Override
@@ -42,35 +42,35 @@ public class CastsDetailAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
         if (convertView == null) {
-             convertView = View.inflate(viewGroup.getContext(), R.layout.item_movie_detail, null);
+            convertView = View.inflate(viewGroup.getContext(), R.layout.item_movie_detail, null);
         }
         ViewHolder viewHolder = ViewHolder.getViewHolder(convertView);
-//        if (i == 0) {
-//            Glide.with(viewGroup.getContext()).load(casts.get(i).getAvatars().getLarge()).into(ViewHolder.iv_item_poster);
-//            viewHolder.tv_item_casts_name.setText(casts.get(i).getName());
-//            viewHolder.tv_item_casts_type.setText("[演员]");
-//        } else {
-            Glide.with(viewGroup.getContext()).load(casts.get(i).getAvatars().getLarge()).into(ViewHolder.iv_item_poster);
-            viewHolder.tv_item_casts_name.setText(casts.get(i).getName());
+        if (moviePeopleList.get(i).getType() == 1){
+            Glide.with(viewGroup.getContext()).load(moviePeopleList.get(i).getAvatars().getLarge()).into(ViewHolder.iv_item_poster);
+            viewHolder.tv_item_casts_name.setText(moviePeopleList.get(i).getName());
+            viewHolder.tv_item_casts_type.setText("[导演]");
+        } else{
+            Glide.with(viewGroup.getContext()).load(moviePeopleList.get(i).getAvatars().getLarge()).into(ViewHolder.iv_item_poster);
+            viewHolder.tv_item_casts_name.setText(moviePeopleList.get(i).getName());
             viewHolder.tv_item_casts_type.setText("[演员]");
-//        }
+        }
         return convertView;
     }
 
-    private static class ViewHolder{
+    private static class ViewHolder {
 
         private static ImageView iv_item_poster;
         private static TextView tv_item_casts_name;
         private static TextView tv_item_casts_type;
 
-        public static ViewHolder getViewHolder(View convertView){
+        public static ViewHolder getViewHolder(View convertView) {
             ViewHolder viewHolder = (ViewHolder) convertView.getTag();
             if (viewHolder == null) {
                 viewHolder = new ViewHolder();
-                iv_item_poster = ((ImageView) convertView.findViewById(R.id.iv_item_poster));
-                tv_item_casts_name = ((TextView) convertView.findViewById(R.id.tv_item_casts_name));
-                tv_item_casts_type = ((TextView) convertView.findViewById(R.id.tv_item_casts_type));
-               convertView.setTag(viewHolder);
+                viewHolder.iv_item_poster = ((ImageView) convertView.findViewById(R.id.iv_item_poster));
+                viewHolder.tv_item_casts_name = ((TextView) convertView.findViewById(R.id.tv_item_casts_name));
+                viewHolder.tv_item_casts_type = ((TextView) convertView.findViewById(R.id.tv_item_casts_type));
+                convertView.setTag(viewHolder);
             }
             return viewHolder;
         }

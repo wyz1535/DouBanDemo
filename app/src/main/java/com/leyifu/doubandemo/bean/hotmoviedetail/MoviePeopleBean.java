@@ -1,20 +1,15 @@
 package com.leyifu.doubandemo.bean.hotmoviedetail;
 
 /**
- * Created by xingxing on 2017/8/31.
+ * Created by xingxing on 2017/9/1.
  */
-public class CastsBean {
-    /**
-     * alt : https://movie.douban.com/celebrity/1355522/
-     * avatars : {"large":"https://img1.doubanio.com/img/celebrity/large/1494157438.59.jpg","medium":"https://img1.doubanio.com/img/celebrity/medium/1494157438.59.jpg","small":"https://img1.doubanio.com/img/celebrity/small/1494157438.59.jpg"}
-     * id : 1355522
-     * name :
-     */
 
+public class MoviePeopleBean {
     private String alt;
     private AvatarsBean avatars;
     private String id;
     private String name;
+    private int type;
 
     public String getAlt() {
         return alt;
@@ -48,4 +43,11 @@ public class CastsBean {
         this.name = name;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 }

@@ -1,14 +1,14 @@
-package com.leyifu.doubandemo.bean.hotmoviedetail;
+package com.leyifu.doubandemo.bean.top250;
 
 /**
- * Created by xingxing on 2017/8/31.
+ * Created by xingxing on 2017/9/3.
  */
 public class CastsBean {
     /**
-     * alt : https://movie.douban.com/celebrity/1355522/
-     * avatars : {"large":"https://img1.doubanio.com/img/celebrity/large/1494157438.59.jpg","medium":"https://img1.doubanio.com/img/celebrity/medium/1494157438.59.jpg","small":"https://img1.doubanio.com/img/celebrity/small/1494157438.59.jpg"}
-     * id : 1355522
-     * name :
+     * alt : https://movie.douban.com/celebrity/1054521/
+     * avatars : {"large":"https://img3.doubanio.com/img/celebrity/large/17525.jpg","medium":"https://img3.doubanio.com/img/celebrity/medium/17525.jpg","small":"https://img3.doubanio.com/img/celebrity/small/17525.jpg"}
+     * id : 1054521
+     * name : 蒂姆·罗宾斯
      */
 
     private String alt;
@@ -48,4 +48,13 @@ public class CastsBean {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "CastsBean{" +
+                "alt='" + alt + '\'' +
+                ", avatars=" + avatars +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
