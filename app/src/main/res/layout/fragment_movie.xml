@@ -1,66 +1,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.leyifu.doubandemo.fragment.MovieFragment">
 
-    <LinearLayout
+    <android.support.design.widget.TabLayout
+        android:background="@color/white"
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal">
+        android:layout_height="40dp"
+        app:tabSelectedTextColor="@color/colorAccent"
+        app:tabTextColor="@color/black01" />
 
-        <RelativeLayout
-            android:id="@+id/rl_hot_movie"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_hot_movie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@string/hot_movie" />
-
-            <view
-                android:id="@+id/view_hot_movie"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#FF4081"
-                android:layout_alignParentBottom="true" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_top250"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_top250"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@string/hot_movie" />
-
-            <view
-                android:id="@+id/view_top250"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#FF4081"
-                android:layout_alignParentBottom="true" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <android.support.v4.view.ViewPager
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+        <android.support.v4.view.ViewPager
+            android:layout_weight="1"
+            android:id="@+id/view_pager_movie"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
 </LinearLayout>

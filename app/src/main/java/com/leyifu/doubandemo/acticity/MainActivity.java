@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -82,34 +81,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         radio_group.setOnCheckedChangeListener(checkChangeListener);
 
         main_view_pager.setAdapter(new MainAdapter(fragmentManager, fragments));
-
+        main_view_pager.setOffscreenPageLimit(3);
         main_view_pager.addOnPageChangeListener(pageChangeListener);
 
         iv_drawable.setOnClickListener(this);
     }
 
-        ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            if (position == 0) {
+                radio_group.check(R.id.rb_movie);
+            } else if (position == 1) {
+                radio_group.check(R.id.rb_friends);
+            } else if (position == 2) {
+                radio_group.check(R.id.rb_music);
             }
+        }
 
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 0) {
-                    radio_group.check(R.id.rb_movie);
-                } else if (position == 1) {
-                    radio_group.check(R.id.rb_friends);
-                } else if (position == 2) {
-                    radio_group.check(R.id.rb_music);
-                }
-            }
+        @Override
+        public void onPageScrollStateChanged(int state) {
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        };
+        }
+    };
 
     private void initNavigation() {
         navigation_view.inflateMenu(R.menu.navigation_menu);
@@ -131,8 +130,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     currentFragment = 2;
                     break;
             }
-            Log.e(TAG, "currentFragment: "+currentFragment);
-            main_view_pager.setCurrentItem(currentFragment,false);
+            main_view_pager.setCurrentItem(currentFragment, false);
         }
     };
 
