@@ -140,22 +140,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                    ShowUtil.showToast(MainActivity.this, "nav_home");
+                    ShowUtil.toast(MainActivity.this, "nav_home");
                     break;
                 case R.id.nav_suggest:
-                    ShowUtil.showToast(MainActivity.this, "nav_suggest");
+                    ShowUtil.toast(MainActivity.this, "nav_suggest");
                     break;
                 case R.id.nav_theme:
-                    ShowUtil.showToast(MainActivity.this, "nav_theme");
+                    ShowUtil.toast(MainActivity.this, "nav_theme");
                     break;
                 case R.id.nav_feekback:
-                    ShowUtil.showToast(MainActivity.this, "nav_feekback");
+                    ShowUtil.toast(MainActivity.this, "nav_feekback");
                     break;
                 case R.id.nav_setting:
-                    ShowUtil.showToast(MainActivity.this, "nav_setting");
+                    ShowUtil.toast(MainActivity.this, "nav_setting");
                     break;
                 case R.id.nav_about:
-                    ShowUtil.showToast(MainActivity.this, "nav_about");
+                    ShowUtil.toast(MainActivity.this, "nav_about");
                     break;
 
             }
