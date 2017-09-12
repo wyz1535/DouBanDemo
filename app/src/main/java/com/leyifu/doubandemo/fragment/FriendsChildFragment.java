@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +57,6 @@ public class FriendsChildFragment extends Fragment implements IgetBookView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friends_child, container, false);
         unbinder = ButterKnife.bind(this, view);
         Bundle arguments = getArguments();
@@ -122,6 +120,7 @@ public class FriendsChildFragment extends Fragment implements IgetBookView {
         }
     };
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -146,4 +145,5 @@ public class FriendsChildFragment extends Fragment implements IgetBookView {
     public void onBookFailed() {
 
     }
+
 }
