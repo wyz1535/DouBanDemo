@@ -3,11 +3,10 @@ package com.leyifu.doubandemo.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,60 +17,30 @@ import com.leyifu.doubandemo.bean.top250.SubjectsBean;
 import com.leyifu.doubandemo.bean.top250.Top250Bean;
 import com.leyifu.doubandemo.constant.Constants;
 import com.leyifu.doubandemo.interf.DouBanApi;
-import com.leyifu.doubandemo.util.ApiUtil;
-import com.leyifu.doubandemo.util.ShowUtil;
+import com.leyifu.doubandemo.interf.IgetTop250View;
+import com.leyifu.doubandemo.presenter.DouBanPersenter;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Top250Fragment extends Fragment {
+public class Top250Fragment extends Fragment implements IgetTop250View {
 
     private static final int SUCCEED = 0;
     private static final int FAILD = 1;
     private static final String TAG = "Top250Fragment";
     private RecyclerView lv_top250;
-    private int pageCount ;
+    private int pageCount;
     private int PAGE_SIZE = 10;
-    List<SubjectsBean> subjectsSize = new ArrayList<>();
     private static final String URL = Constants.URL + "v2/movie/top250";
     private LinearLayoutManager linearLayoutManager;
     private Top250RecyclerAdapter adapter;
 
-    Handler handler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case SUCCEED:
-                    Top250Bean top250Bean = (Top250Bean) msg.obj;
-                    if (top250Bean != null) {
-//                        lv_top250.setAdapter(new Top250Adapter(top250Bean.getSubjects()));
-                        Log.e(TAG, "top250Bean: " + top250Bean);
-                        subjects = top250Bean.getSubjects();
-                        for (int i = 0; i < PAGE_SIZE; i++) {
-                            SubjectsBean subjectsBean = subjects.get(i);
-                            subjectsSize.add(subjectsBean);
-                        }
-                        adapter = new Top250RecyclerAdapter(getActivity(), subjectsSize);
-                        lv_top250.setAdapter(adapter);
-                    }
-                    break;
-                case FAILD:
-                    ShowUtil.toast(getContext(), "数据请求失败");
-                    break;
-            }
-        }
-    };
     private List<SubjectsBean> subjects;
+    private Top250Bean mTop250Bean;
+    private DouBanPersenter douBanPersenter;
+    private SwipeRefreshLayout top250_swipe;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,12 +54,15 @@ public class Top250Fragment extends Fragment {
 
     private void initView(View view) {
         lv_top250 = ((RecyclerView) view.findViewById(R.id.lv_top250));
+        top250_swipe = ((SwipeRefreshLayout) view.findViewById(R.id.top250_swipe));
     }
 
     private void init() {
         linearLayoutManager = new LinearLayoutManager(getContext());
         lv_top250.setLayoutManager(linearLayoutManager);
         lv_top250.addOnScrollListener(onscrollListener);
+        top250_swipe.setColorSchemeResources(R.color.colorAccent);
+        top250_swipe.setOnRefreshListener(onrefreshListener);
     }
 
     RecyclerView.OnScrollListener onscrollListener = new RecyclerView.OnScrollListener() {
@@ -117,8 +89,7 @@ public class Top250Fragment extends Fragment {
                     public void run() {
                         // TODO: 2017/9/5  获取数据
                         pageCount++;
-//
-
+                        douBanPersenter.getTop250(Top250Fragment.this, DouBanApi.class, pageCount * PAGE_SIZE, PAGE_SIZE, true);
                     }
                 }, 1000);
             }
@@ -131,44 +102,42 @@ public class Top250Fragment extends Fragment {
         }
     };
 
+    SwipeRefreshLayout.OnRefreshListener onrefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            douBanPersenter.getTop250(Top250Fragment.this, DouBanApi.class, pageCount * PAGE_SIZE, PAGE_SIZE, false);
+            top250_swipe.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (top250_swipe != null) {
+                        top250_swipe.setRefreshing(false);
+                    }
+                }
+            }, 2000);
+        }
+    };
+
 
     private void initData() {
-//        HttpUtil.sendHttpRequest(URL, new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                handler.sendEmptyMessage(FAILD);
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                String result = response.body().string();
-//                if (result != null) {
-//                    Top250Bean top250Bean = new Gson().fromJson(result, Top250Bean.class);
-//                    Message message = handler.obtainMessage();
-//                    message.what = SUCCEED;
-//                    message.obj = top250Bean;
-//                    handler.sendMessage(message);
-//                }
-//            }
-//        });
-
-        Observable<Top250Bean> observable = ApiUtil.getRetrofir().create(DouBanApi.class).getTop250Movie(pageCount, PAGE_SIZE);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Top250Bean>() {
-                    @Override
-                    public void call(Top250Bean top250Bean) {
-                        Log.e(TAG, "call: " + top250Bean);
-                        List<SubjectsBean> subjects = top250Bean.getSubjects();
-                        adapter = new Top250RecyclerAdapter(getActivity(), subjects);
-                        lv_top250.setAdapter(adapter);
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        ShowUtil.toast(getActivity(), "网络错误");
-                    }
-                });
+        douBanPersenter = new DouBanPersenter(getActivity());
+        douBanPersenter.getTop250(this, DouBanApi.class, pageCount * PAGE_SIZE, PAGE_SIZE, false);
     }
 
+    @Override
+    public void getTop250Success(Top250Bean top250Bean, boolean isLoadMore) {
+        if (isLoadMore) {
+            mTop250Bean.getSubjects().addAll(top250Bean.getSubjects());
+            adapter.notifyDataSetChanged();
+        } else {
+            mTop250Bean = top250Bean;
+            adapter = new Top250RecyclerAdapter(getActivity(), mTop250Bean.getSubjects());
+            lv_top250.setAdapter(adapter);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getTopFaild() {
+
+    }
 }

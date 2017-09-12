@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,23 +116,27 @@ public class Top250RecyclerAdapter extends RecyclerView.Adapter<Top250RecyclerAd
             tv_item_name.setText(subjects.get(position).getTitle());
             tv_item_origin_name.setText(subjects.get(position).getOriginal_title());
             tv_item_score.setText("评分:" + subjects.get(position).getRating().getAverage());
-//        tv_item_number.setText((number++) + "");
+            if (position < 9) {
+                tv_item_number.setText("0" + (position + 1));
+            } else {
+                tv_item_number.setText("" + (position + 1));
+            }
         }
     }
 
-     class FooterViewHolder extends ViewHolder {
-         View view;
+    class FooterViewHolder extends ViewHolder {
+        View view;
         private final LinearLayout ll_footer;
         private final ProgressBar progress_bar;
         private final TextView tv_footer_load;
 
         public FooterViewHolder(View view) {
             super(view);
-            this.view=view;
+            this.view = view;
             ll_footer = ((LinearLayout) view.findViewById(R.id.ll_footer));
             progress_bar = ((ProgressBar) view.findViewById(R.id.progress_bar));
             tv_footer_load = ((TextView) view.findViewById(R.id.tv_footer_load));
-            LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,100);
+            LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
             itemView.setLayoutParams(params);
         }
 
