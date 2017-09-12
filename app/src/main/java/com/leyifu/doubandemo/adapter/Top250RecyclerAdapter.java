@@ -56,7 +56,6 @@ public class Top250RecyclerAdapter extends RecyclerView.Adapter<Top250RecyclerAd
         }
         if (viewType == TYPE_FOOTER) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_footer, null);
-
             return new FooterViewHolder(view);
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.item_top250, null);

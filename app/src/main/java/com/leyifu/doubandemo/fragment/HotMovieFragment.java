@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +83,6 @@ public class HotMovieFragment extends Fragment {
         hot_movie_swipe.setColorSchemeResources(R.color.colorAccent,R.color.black,R.color.colorPrimary);
         widthPixels = getResources().getDisplayMetrics().widthPixels;
         heightPixels = getResources().getDisplayMetrics().heightPixels;
-        Log.e(TAG, "widthPixels="+ widthPixels +"&heightPixels="+ heightPixels);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         hot_movie_recycle_view.setLayoutManager(gridLayoutManager);
 

@@ -140,4 +140,10 @@ public class Top250Fragment extends Fragment implements IgetTop250View {
     public void getTopFaild() {
 
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mTop250Bean.getSubjects().clear();
+    }
 }

@@ -42,6 +42,7 @@ public class MovieFragment extends Fragment implements ViewPager.OnPageChangeLis
     }
 
     private void initView(View view) {
+
         tab_layout = ((TabLayout) view.findViewById(R.id.tab_layout));
         view_pager_movie = ((ViewPager) view.findViewById(R.id.view_pager_movie));
     }

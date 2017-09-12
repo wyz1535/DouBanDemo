@@ -1,13 +1,22 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context="com.leyifu.doubandemo.fragment.FriendsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="friends" />
+    <android.support.design.widget.TabLayout
+        android:id="@+id/friends_tab_layout"
+        app:tabMode="fixed"
+        android:layout_height="40dp"
+        app:tabSelectedTextColor="@color/colorAccent"
+        app:tabTextColor="@color/black01"
+        android:layout_width="match_parent"/>
 
-</FrameLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/friends_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
