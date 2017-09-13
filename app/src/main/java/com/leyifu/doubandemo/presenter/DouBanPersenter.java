@@ -4,10 +4,12 @@ import android.content.Context;
 
 import com.leyifu.doubandemo.bean.book.BookBean;
 import com.leyifu.doubandemo.bean.book.BooksBean;
+import com.leyifu.doubandemo.bean.music.MusicBean;
 import com.leyifu.doubandemo.bean.top250.Top250Bean;
 import com.leyifu.doubandemo.interf.DouBanApi;
 import com.leyifu.doubandemo.interf.IgetBookDetail;
 import com.leyifu.doubandemo.interf.IgetBookView;
+import com.leyifu.doubandemo.interf.IgetMusicView;
 import com.leyifu.doubandemo.interf.IgetTop250View;
 import com.leyifu.doubandemo.util.ApiUtil;
 import com.leyifu.doubandemo.util.ShowUtil;
@@ -96,6 +98,23 @@ public class DouBanPersenter {
                     @Override
                     public void call(BooksBean booksBean) {
                         igetBookDetail.onBookDetailSuccess(booksBean);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        ShowUtil.toast(context,"网络错误");
+                    }
+                });
+    }
+
+    public void getMusic(IgetMusicView igetMusicView, Class<DouBanApi> douBanApiClass, String title, int count, int pageCount, boolean isLoadMore) {
+        Observable<MusicBean> musicBeanObservable = ApiUtil.getRetrofir().create(douBanApiClass).getMusic(title, count, pageCount);
+        musicBeanObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<MusicBean>() {
+                    @Override
+                    public void call(MusicBean musicBean) {
+                        igetMusicView.onMusicSuccess(musicBean,isLoadMore);
                     }
                 }, new Action1<Throwable>() {
                     @Override
