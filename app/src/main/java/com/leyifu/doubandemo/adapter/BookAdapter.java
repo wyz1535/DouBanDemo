@@ -1,6 +1,7 @@
 package com.leyifu.doubandemo.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.leyifu.doubandemo.R;
+import com.leyifu.doubandemo.acticity.BookDetailsActivity;
 import com.leyifu.doubandemo.bean.book.BooksBean;
 
 import java.util.List;
@@ -60,7 +62,19 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             return new FooterViewHolder(view);
         } else {
             View view = View.inflate(context, R.layout.item_recycler_hot, null);
-            return new ViewHolder(view);
+            ViewHolder viewHolder = new ViewHolder(view);
+            viewHolder.iv_hot_movie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = viewHolder.getAdapterPosition();
+                    String id = books.get(position).getId();
+                    Intent intent = new Intent(context, BookDetailsActivity.class);
+                    intent.putExtra("id", id);
+                    context.startActivity(intent);
+
+                }
+            });
+            return viewHolder;
         }
     }
 
@@ -119,7 +133,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             ll_footer = ((LinearLayout) view.findViewById(R.id.ll_footer));
             progress_bar = ((ProgressBar) view.findViewById(R.id.progress_bar));
             tv_footer_load = ((TextView) view.findViewById(R.id.tv_footer_load));
-            LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
+            LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams((widthPixels - 120) / 3, (heightPixels - 400) / 3);
             itemView.setLayoutParams(params);
         }
 

@@ -16,6 +16,7 @@
         app:tabTextColor="@color/black01" />
 
     <android.support.v4.view.ViewPager
+        android:overScrollMode="never"
         android:id="@+id/music_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

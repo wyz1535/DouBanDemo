@@ -3,8 +3,10 @@ package com.leyifu.doubandemo.presenter;
 import android.content.Context;
 
 import com.leyifu.doubandemo.bean.book.BookBean;
+import com.leyifu.doubandemo.bean.book.BooksBean;
 import com.leyifu.doubandemo.bean.top250.Top250Bean;
 import com.leyifu.doubandemo.interf.DouBanApi;
+import com.leyifu.doubandemo.interf.IgetBookDetail;
 import com.leyifu.doubandemo.interf.IgetBookView;
 import com.leyifu.doubandemo.interf.IgetTop250View;
 import com.leyifu.doubandemo.util.ApiUtil;
@@ -55,6 +57,15 @@ public class DouBanPersenter {
                 });
     }
 
+    /**
+     * book 请求数据
+     * @param igetBookView
+     * @param douBanApiClass
+     * @param tag
+     * @param pageCount
+     * @param PAGE_SIZE
+     * @param isLoadMore
+     */
     public void getFriends01(IgetBookView igetBookView, Class<DouBanApi> douBanApiClass, String tag, int pageCount, int PAGE_SIZE, boolean isLoadMore) {
         Observable<BookBean> observable = ApiUtil.getRetrofir().create(douBanApiClass).getBook(tag,pageCount,PAGE_SIZE);
         observable.subscribeOn(Schedulers.io())
@@ -72,5 +83,26 @@ public class DouBanPersenter {
                 });
     }
 
+    /**book 详情
+     * @param igetBookDetail
+     * @param douBanApiClass
+     * @param id
+     */
+    public void getBooksDetail(IgetBookDetail igetBookDetail, Class<DouBanApi> douBanApiClass, String id) {
+        Observable<BooksBean> bookDetail = ApiUtil.getRetrofir().create(douBanApiClass).getBookDetail(id);
+        bookDetail.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<BooksBean>() {
+                    @Override
+                    public void call(BooksBean booksBean) {
+                        igetBookDetail.onBookDetailSuccess(booksBean);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        ShowUtil.toast(context,"网络错误");
+                    }
+                });
+    }
 
 }

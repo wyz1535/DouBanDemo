@@ -3,6 +3,7 @@ package com.leyifu.doubandemo.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,6 +42,7 @@ public class Top250Fragment extends Fragment implements IgetTop250View {
     private Top250Bean mTop250Bean;
     private DouBanPersenter douBanPersenter;
     private SwipeRefreshLayout top250_swipe;
+    private FloatingActionButton floatingActionButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +57,7 @@ public class Top250Fragment extends Fragment implements IgetTop250View {
     private void initView(View view) {
         lv_top250 = ((RecyclerView) view.findViewById(R.id.lv_top250));
         top250_swipe = ((SwipeRefreshLayout) view.findViewById(R.id.top250_swipe));
+        floatingActionButton = ((FloatingActionButton) view.findViewById(R.id.floatingActionButton));
     }
 
     private void init() {
@@ -63,6 +66,15 @@ public class Top250Fragment extends Fragment implements IgetTop250View {
         lv_top250.addOnScrollListener(onscrollListener);
         top250_swipe.setColorSchemeResources(R.color.colorAccent);
         top250_swipe.setOnRefreshListener(onrefreshListener);
+
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                firstVisibleItemPosition = 0;
+                lv_top250.smoothScrollToPosition(0);
+            }
+        });
     }
 
     RecyclerView.OnScrollListener onscrollListener = new RecyclerView.OnScrollListener() {
@@ -74,15 +86,26 @@ public class Top250Fragment extends Fragment implements IgetTop250View {
             super.onScrollStateChanged(recyclerView, newState);
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+                final int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if (firstVisibleItemPosition == 0 || firstVisibleItemPosition == -1) {
+                    floatingActionButton.setVisibility(View.INVISIBLE);
+                } else {
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                }
+
                 if (linearLayoutManager.getItemCount() == 1) {
                     if (adapter != null) {
                         adapter.updataState(adapter.LOAD_NONE);
+                        floatingActionButton.setVisibility(View.INVISIBLE);
                     }
                     return;
                 }
                 if (lastVisibleItemPosition + 1 == linearLayoutManager.getItemCount()) {
-                    adapter.updataState(adapter.LOAD_TO_PULL);
-                    adapter.updataState(adapter.LOAD_MORE);
+                    if (adapter != null) {
+                        adapter.updataState(adapter.LOAD_TO_PULL);
+                        adapter.updataState(adapter.LOAD_MORE);
+                    }
                 }
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -141,9 +164,5 @@ public class Top250Fragment extends Fragment implements IgetTop250View {
 
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mTop250Bean.getSubjects().clear();
-    }
+
 }

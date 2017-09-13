@@ -77,6 +77,8 @@ public class FriendsChildFragment extends Fragment implements IgetBookView {
 
         widthPixels = getResources().getDisplayMetrics().widthPixels;
         heightPixels = getResources().getDisplayMetrics().heightPixels;
+        friendsSwipe.setColorSchemeResources(R.color.colorAccent);
+        friendsSwipe.setOnRefreshListener(onRefreshListener);
 
         douBanPersenter = new DouBanPersenter(getActivity());
         douBanPersenter.getFriends01(this, DouBanApi.class, title, pageCount, PAGE_SIZE, false);
@@ -85,6 +87,22 @@ public class FriendsChildFragment extends Fragment implements IgetBookView {
         friendsRecyclerView.setLayoutManager(manager);
         friendsRecyclerView.addOnScrollListener(onScrollListener);
     }
+
+    SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            douBanPersenter.getFriends01(FriendsChildFragment.this, DouBanApi.class, title, pageCount, PAGE_SIZE, false);
+            friendsSwipe.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (friendsSwipe != null) {
+                        friendsSwipe.setRefreshing(false);
+                    }
+                }
+            }, 2000);
+        }
+    };
+
 
     RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         @Override
@@ -101,8 +119,10 @@ public class FriendsChildFragment extends Fragment implements IgetBookView {
                     }
                 }
                 if (lastVisibleItemPosition + 1 == manager.getItemCount()) {
-                    adapter.updataState(adapter.LOAD_TO_PULL);
-                    adapter.updataState(adapter.LOADING_MORE);
+                    if (adapter != null) {
+                        adapter.updataState(adapter.LOAD_TO_PULL);
+                        adapter.updataState(adapter.LOADING_MORE);
+                    }
                 }
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -145,5 +165,4 @@ public class FriendsChildFragment extends Fragment implements IgetBookView {
     public void onBookFailed() {
 
     }
-
 }

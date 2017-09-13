@@ -8,4 +8,6 @@
     <string name="introduce">简介:</string>
     <string name="detail_more_look">查看更多</string>
     <string name="load_more">加载更多...</string>
+    <string name="detail_want_look">想看</string>
+    <string name="look_details">查看详情</string>
 </resources>
