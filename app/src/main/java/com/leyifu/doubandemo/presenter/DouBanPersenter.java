@@ -107,6 +107,15 @@ public class DouBanPersenter {
                 });
     }
 
+    /**
+     * music请求数据
+     * @param igetMusicView
+     * @param douBanApiClass
+     * @param title
+     * @param count
+     * @param pageCount
+     * @param isLoadMore
+     */
     public void getMusic(IgetMusicView igetMusicView, Class<DouBanApi> douBanApiClass, String title, int count, int pageCount, boolean isLoadMore) {
         Observable<MusicBean> musicBeanObservable = ApiUtil.getRetrofir().create(douBanApiClass).getMusic(title, count, pageCount);
         musicBeanObservable.subscribeOn(Schedulers.io())
@@ -119,7 +128,8 @@ public class DouBanPersenter {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        ShowUtil.toast(context,"网络错误");
+
+                        igetMusicView.onFaild();
                     }
                 });
     }

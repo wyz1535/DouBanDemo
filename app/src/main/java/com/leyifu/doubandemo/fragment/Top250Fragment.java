@@ -136,7 +136,7 @@ public class Top250Fragment extends Fragment implements IgetTop250View {
                         top250_swipe.setRefreshing(false);
                     }
                 }
-            }, 2000);
+            }, 1000);
         }
     };
 

@@ -43,6 +43,7 @@ public class MusicFragment extends Fragment {
     }
 
     private void init() {
+        titles.add("国语");
         titles.add("经典");
         titles.add("流行");
         titles.add("韩系");
@@ -52,6 +53,7 @@ public class MusicFragment extends Fragment {
         musicTabLayout.addTab(musicTabLayout.newTab().setText(titles.get(1)));
         musicTabLayout.addTab(musicTabLayout.newTab().setText(titles.get(2)));
         musicTabLayout.addTab(musicTabLayout.newTab().setText(titles.get(3)));
+        musicTabLayout.addTab(musicTabLayout.newTab().setText(titles.get(4)));
         musicViewPager.setAdapter(new MusicAdapter(getActivity().getSupportFragmentManager(),titles));
         musicTabLayout.setupWithViewPager(musicViewPager);
     }

@@ -17,6 +17,7 @@ import com.leyifu.doubandemo.bean.music.MusicBean;
 import com.leyifu.doubandemo.interf.DouBanApi;
 import com.leyifu.doubandemo.interf.IgetMusicView;
 import com.leyifu.doubandemo.presenter.DouBanPersenter;
+import com.leyifu.doubandemo.util.ShowUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +36,7 @@ public class MusicChild1Fragment extends Fragment implements IgetMusicView {
     private String title;
     private int position;
     private int pageCount;
-    private int pageSize=10;
+    private int pageSize = 10;
     private MusicRecyclerAdapter adapter;
     private MusicBean mMusicBean;
     private DouBanPersenter douBanPersenter;
@@ -71,45 +72,65 @@ public class MusicChild1Fragment extends Fragment implements IgetMusicView {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         friendsRecyclerView.setLayoutManager(linearLayoutManager);
         douBanPersenter = new DouBanPersenter(getActivity());
-        douBanPersenter.getMusic(this, DouBanApi.class,title,pageCount,pageSize,false);
+        douBanPersenter.getMusic(this, DouBanApi.class, title, pageCount * pageSize, pageSize, false);
         friendsRecyclerView.addOnScrollListener(onScrollChange);
+        friendsSwipe.setColorSchemeResources(R.color.colorAccent);
+        friendsSwipe.setOnRefreshListener(onRefresh);
     }
-        RecyclerView.OnScrollListener onScrollChange = new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
-                    if (lastVisibleItemPosition == 1) {
-                        if (adapter != null) {
-                            adapter.updataState(adapter.LOAD_NONE);
-                            return;
-                        }
 
-                        if (lastVisibleItemPosition + 1 == linearLayoutManager.getItemCount()) {
-                            if (adapter != null) {
-                                adapter.updataState(adapter.LOAD_TO_PULL);
-                                adapter.updataState(adapter.LOAD_MORE);
-                            }
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    pageCount++;
-                                    douBanPersenter.getMusic(MusicChild1Fragment.this, DouBanApi.class,title,pageCount,pageSize,true);
-                                }
-                            }, 1000);
-                        }
+    SwipeRefreshLayout.OnRefreshListener onRefresh = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            pageCount++;
+            douBanPersenter.getMusic(MusicChild1Fragment.this, DouBanApi.class, title, pageCount * pageSize, pageSize, false);
+            friendsSwipe.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (friendsSwipe != null) {
+                        friendsSwipe.setRefreshing(false);
                     }
                 }
+            }, 1000);
+        }
+    };
 
+    RecyclerView.OnScrollListener onScrollChange = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+                if (lastVisibleItemPosition == 1) {
+                    if (adapter != null) {
+                        adapter.updataState(adapter.LOAD_NONE);
+                    }
+                    return;
+                }
+
+                if (lastVisibleItemPosition + 1 == linearLayoutManager.getItemCount()) {
+                    if (adapter != null) {
+                        adapter.updataState(adapter.LOAD_TO_PULL);
+                        adapter.updataState(adapter.LOAD_MORE);
+                    }
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            pageCount++;
+                            douBanPersenter.getMusic(MusicChild1Fragment.this, DouBanApi.class, title, pageCount * pageSize, pageSize, true);
+                        }
+                    }, 1000);
+
+                }
             }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        };
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+        }
+    };
 
 
     @Override
@@ -118,15 +139,15 @@ public class MusicChild1Fragment extends Fragment implements IgetMusicView {
             mMusicBean.getMusics().addAll(musicBean.getMusics());
             adapter.notifyDataSetChanged();
         } else {
-            this.mMusicBean =musicBean;
-            adapter = new MusicRecyclerAdapter(getActivity(),mMusicBean.getMusics());
+            this.mMusicBean = musicBean;
+            adapter = new MusicRecyclerAdapter(getActivity(), mMusicBean.getMusics());
             friendsRecyclerView.setAdapter(adapter);
         }
     }
 
     @Override
     public void onFaild() {
-
+        ShowUtil.toast(getActivity(),"网络错误");
     }
 
     @Override

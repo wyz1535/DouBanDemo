@@ -99,7 +99,7 @@ public class FriendsChildFragment extends Fragment implements IgetBookView {
                         friendsSwipe.setRefreshing(false);
                     }
                 }
-            }, 2000);
+            }, 1000);
         }
     };
 
@@ -109,7 +109,6 @@ public class FriendsChildFragment extends Fragment implements IgetBookView {
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-
 
                 int lastVisibleItemPosition = manager.findLastVisibleItemPosition();
                 if (manager.getItemCount() == 1) {

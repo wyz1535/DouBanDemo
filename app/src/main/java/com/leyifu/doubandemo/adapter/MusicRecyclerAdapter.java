@@ -12,8 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.leyifu.doubandemo.R;
-import com.leyifu.doubandemo.acticity.MovieDetialActivity;
+import com.leyifu.doubandemo.acticity.BookDetailsActivity;
+import com.leyifu.doubandemo.bean.music.AuthorBean;
 import com.leyifu.doubandemo.bean.music.MusicsBean;
 
 import java.util.List;
@@ -57,13 +59,13 @@ public class MusicRecyclerAdapter extends RecyclerView.Adapter<MusicRecyclerAdap
             View view = LayoutInflater.from(context).inflate(R.layout.item_footer, null);
             return new FooterViewHolder(view);
         } else {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_top250, null);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_music01, null);
             final ViewHolder viewHolder = new ViewHolder(view);
             viewHolder.ll_item_top250.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = viewHolder.getAdapterPosition();
-                    Intent intent = new Intent(context, MovieDetialActivity.class);
+                    Intent intent = new Intent(context, BookDetailsActivity.class);
                     intent.putExtra("id", subjects.get(position).getId());
                     context.startActivity(intent);
                 }
@@ -94,23 +96,31 @@ public class MusicRecyclerAdapter extends RecyclerView.Adapter<MusicRecyclerAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView iv_item_picture;
         private final TextView tv_item_name;
-        private final TextView tv_item_origin_name;
         private final TextView tv_item_score;
-        private final TextView tv_item_number;
         private final LinearLayout ll_item_top250;
+        private final TextView tv_item_author;
 
         public ViewHolder(View itemView) {
             super(itemView);
             iv_item_picture = ((ImageView) itemView.findViewById(R.id.iv_item_picture));
             ll_item_top250 = ((LinearLayout) itemView.findViewById(R.id.ll_item_top250));
             tv_item_name = ((TextView) itemView.findViewById(R.id.tv_item_name));
-            tv_item_origin_name = ((TextView) itemView.findViewById(R.id.tv_item_origin_name));
             tv_item_score = ((TextView) itemView.findViewById(R.id.tv_item_score));
-            tv_item_number = ((TextView) itemView.findViewById(R.id.tv_item_number));
+            tv_item_author = ((TextView) itemView.findViewById(R.id.tv_item_author));
+
+
         }
 
         public void bindItem(List<MusicsBean> subjects, int position) {
-
+            Glide.with(context).load(subjects.get(position).getImage()).into(iv_item_picture);
+            tv_item_name.setText("歌名:" + subjects.get(position).getTitle());
+            tv_item_score.setText("评分:" + subjects.get(position).getRating().getAverage());
+            StringBuilder builder = new StringBuilder();
+            List<AuthorBean> author = subjects.get(position).getAuthor();
+            for (int i = 0; i < author.size(); i++) {
+                builder.append(author.get(i).getName() + "");
+            }
+            tv_item_author.setText("演唱:" + builder);
         }
     }
 
@@ -126,7 +136,7 @@ public class MusicRecyclerAdapter extends RecyclerView.Adapter<MusicRecyclerAdap
             ll_footer = ((LinearLayout) view.findViewById(R.id.ll_footer));
             progress_bar = ((ProgressBar) view.findViewById(R.id.progress_bar));
             tv_footer_load = ((TextView) view.findViewById(R.id.tv_footer_load));
-            LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100);
+            LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 80);
             itemView.setLayoutParams(params);
         }
 
