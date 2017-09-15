@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.leyifu.doubandemo.fragment.FriendsChildFragment;
 import com.leyifu.doubandemo.fragment.MusicChild1Fragment;
 
 import java.util.List;
@@ -23,7 +24,9 @@ public class MusicAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return MusicChild1Fragment.newInstance(position,titles.get(position));
+        return (position % 2) == 0
+                ? MusicChild1Fragment.newInstance(position, titles.get(position))
+                : FriendsChildFragment.newInstance(position, titles.get(position));
     }
 
     @Override

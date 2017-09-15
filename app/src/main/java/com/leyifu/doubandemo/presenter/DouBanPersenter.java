@@ -5,10 +5,12 @@ import android.content.Context;
 import com.leyifu.doubandemo.bean.book.BookBean;
 import com.leyifu.doubandemo.bean.book.BooksBean;
 import com.leyifu.doubandemo.bean.music.MusicBean;
+import com.leyifu.doubandemo.bean.music.MusicsBean;
 import com.leyifu.doubandemo.bean.top250.Top250Bean;
 import com.leyifu.doubandemo.interf.DouBanApi;
 import com.leyifu.doubandemo.interf.IgetBookDetail;
 import com.leyifu.doubandemo.interf.IgetBookView;
+import com.leyifu.doubandemo.interf.IgetMusicDetailView;
 import com.leyifu.doubandemo.interf.IgetMusicView;
 import com.leyifu.doubandemo.interf.IgetTop250View;
 import com.leyifu.doubandemo.util.ApiUtil;
@@ -134,4 +136,20 @@ public class DouBanPersenter {
                 });
     }
 
+    public void getMusic01Detail(IgetMusicDetailView igetMusicDetailView, Class<DouBanApi> douBanApiClass, String id){
+        Observable<MusicsBean> observable = ApiUtil.getRetrofir().create(douBanApiClass).getMusicDetail(id);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<MusicsBean>() {
+                    @Override
+                    public void call(MusicsBean musicsBean) {
+                        igetMusicDetailView.onMusicDetailSuccess(musicsBean);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        igetMusicDetailView.onMusicDetailFaild();
+                    }
+                });
+    }
 }

@@ -17,6 +17,7 @@ public class ShowUtil {
     private static final int ERROR = 5;
     private static final int NOTHING = 6;
     private static final int level = VERBOSE;
+    private static Toast toast;
 
     public static void v(String TAG, String msg) {
         if (level <= VERBOSE) {
@@ -49,9 +50,14 @@ public class ShowUtil {
     }
 
     public static void toast(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-//        if (toast != null) {
-//            toast.show();
-//        }
+
+        if (toast != null) {
+            toast.setText(msg);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }

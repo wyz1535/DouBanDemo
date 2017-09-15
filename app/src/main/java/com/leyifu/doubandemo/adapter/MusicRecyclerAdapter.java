@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.leyifu.doubandemo.R;
-import com.leyifu.doubandemo.acticity.BookDetailsActivity;
+import com.leyifu.doubandemo.acticity.Music01DetailsActivity;
 import com.leyifu.doubandemo.bean.music.AuthorBean;
 import com.leyifu.doubandemo.bean.music.MusicsBean;
 
@@ -65,7 +65,7 @@ public class MusicRecyclerAdapter extends RecyclerView.Adapter<MusicRecyclerAdap
                 @Override
                 public void onClick(View view) {
                     int position = viewHolder.getAdapterPosition();
-                    Intent intent = new Intent(context, BookDetailsActivity.class);
+                    Intent intent = new Intent(context, Music01DetailsActivity.class);
                     intent.putExtra("id", subjects.get(position).getId());
                     context.startActivity(intent);
                 }

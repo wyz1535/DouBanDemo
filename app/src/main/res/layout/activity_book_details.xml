@@ -114,6 +114,7 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_detail_author_intro_str"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

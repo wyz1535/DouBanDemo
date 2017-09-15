@@ -3,6 +3,7 @@ package com.leyifu.doubandemo.interf;
 import com.leyifu.doubandemo.bean.book.BookBean;
 import com.leyifu.doubandemo.bean.book.BooksBean;
 import com.leyifu.doubandemo.bean.music.MusicBean;
+import com.leyifu.doubandemo.bean.music.MusicsBean;
 import com.leyifu.doubandemo.bean.top250.Top250Bean;
 
 import retrofit2.http.GET;
@@ -27,5 +28,8 @@ public interface DouBanApi {
 
     @GET("v2/music/search")
     Observable<MusicBean> getMusic(@Query("tag") String tag, @Query("start") int start, @Query("count") int count);
+
+    @GET("v2/music/{id}")
+    Observable<MusicsBean> getMusicDetail(@Path("id") String id);
 
 }
