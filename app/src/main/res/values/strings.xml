@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">豆瓣App</string>
+    <string name="app_name">小豆芽</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -10,4 +10,26 @@
     <string name="load_more">加载更多...</string>
     <string name="detail_want_look">想看</string>
     <string name="look_details">查看详情</string>
+    <string name="collText">
+        曾经有一份真挚的爱情摆在我的面前\n\n
+        我没有好好珍惜 直到失去时 才后悔莫及\n\n
+        人世间最痛苦的事莫过于此\n\n
+        如果上天能够再给我一次机会\n\n
+        我会对那个女孩说三个字 我爱你\n\n
+        如果非要在这个爱上加个期限\n\n
+        我希望是 一万年...\n\n
+    </string>
+    <string name="suggest_text">
+        我的意中人是一个盖世英雄\n\n
+        上天既然安排他拔出我的紫青宝剑\n\n
+        他一定是个不平凡的人 \n\n
+        错不了 \n\n
+        我知道有一天他会在一个万众瞩目的情况下出现\n\n
+        身披金甲圣衣 脚踏七彩祥云来娶我！！！\n\n
+    </string>
+    <string name="zixia">紫霞</string>
+    <string name="other_way_land">其他方式登陆</string>
+    <string name="new_user_regist">新用户注册</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="land">登陆</string>
 </resources>

@@ -107,8 +107,6 @@ public class MusicRecyclerAdapter extends RecyclerView.Adapter<MusicRecyclerAdap
             tv_item_name = ((TextView) itemView.findViewById(R.id.tv_item_name));
             tv_item_score = ((TextView) itemView.findViewById(R.id.tv_item_score));
             tv_item_author = ((TextView) itemView.findViewById(R.id.tv_item_author));
-
-
         }
 
         public void bindItem(List<MusicsBean> subjects, int position) {

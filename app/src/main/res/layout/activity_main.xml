@@ -15,6 +15,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:itemTextColor="@color/colorAccent"
+        app:itemIconTint="@color/colorAccent"
         app:headerLayout="@layout/navigation_head" />
 
 </android.support.v4.widget.DrawerLayout>

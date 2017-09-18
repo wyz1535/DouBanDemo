@@ -1,5 +1,7 @@
 package com.leyifu.doubandemo.acticity;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -26,6 +28,8 @@ import com.leyifu.doubandemo.util.ShowUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
@@ -42,6 +46,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     List<Fragment> fragments = new ArrayList<>();
     private ViewPager main_view_pager;
     private FragmentManager fragmentManager;
+    private CircleImageView nav_head_viecle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +117,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void initNavigation() {
         navigation_view.inflateMenu(R.menu.navigation_menu);
-        navigation_view.setCheckedItem(R.id.nav_home);
+        View headerView = navigation_view.getHeaderView(0);
+        nav_head_viecle = ((CircleImageView) headerView.findViewById(R.id.nav_head_circle));
+        nav_head_viecle.setOnClickListener(this);
         navigation_view.setNavigationItemSelectedListener(navigationItemSelected);
+
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_checked},
+                new int[]{android.R.attr.state_checked}
+        };
+
+        int[] colors = new int[]{getResources().getColor(R.color.colorAccent),
+                getResources().getColor(R.color.white)
+        };
+        ColorStateList csl = new ColorStateList(states, colors);
+
+        navigation_view.setItemTextColor(csl);
+        navigation_view.setItemIconTintList(csl);
+//        navigation_view.itemTextColor = csl;
+//        navigation_view.itemIconTintList = csl;
     }
 
     RadioGroup.OnCheckedChangeListener checkChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -140,10 +162,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                    ShowUtil.toast(MainActivity.this, "nav_home");
+                    startActivity(new Intent(MainActivity.this, HomeActivity.class));
                     break;
                 case R.id.nav_suggest:
-                    ShowUtil.toast(MainActivity.this, "nav_suggest");
+                    startActivity(new Intent(MainActivity.this, SuggestActivity.class));
                     break;
                 case R.id.nav_theme:
                     ShowUtil.toast(MainActivity.this, "nav_theme");
@@ -158,6 +180,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     ShowUtil.toast(MainActivity.this, "nav_about");
                     break;
 
+
             }
             return true;
         }
@@ -169,6 +192,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.iv_drawable:
                 drawer_layout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.nav_head_circle:
+                startActivity(new Intent(this,LandAndRegistActivity.class));
                 break;
         }
     }
