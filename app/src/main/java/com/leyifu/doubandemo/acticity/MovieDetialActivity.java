@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -113,6 +114,7 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
     private TextView tv_item_casts_type;
     private HotMovieDetailBean hotMovieDetailBean;
     private NestedScrollView nestedSrollView;
+    private ImageView iv_detail_share;
 
 
     @Override
@@ -141,15 +143,18 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
         lv_detail_person = ((ListView) findViewById(R.id.lv_detail_person));
         tv_click_more = ((TextView) findViewById(R.id.tv_click_more));
         nestedSrollView = ((NestedScrollView) findViewById(R.id.nestedSrollView));
+        iv_detail_share = ((ImageView) findViewById(R.id.iv_detail_share));
     }
 
     private void init() {
+        iv_detail_share.setVisibility(View.VISIBLE);
         // detail_toolbar.setTitle必须在setSupportActionBar(detail_toolbar)之前调用，否则无效
         detail_toolbar.setTitle("");
         setSupportActionBar(detail_toolbar);
 
         iv_back.setOnClickListener(this);
         tv_click_more.setOnClickListener(this);
+        iv_detail_share.setOnClickListener(this);
     }
 
     private void initData() {
@@ -190,7 +195,38 @@ public class MovieDetialActivity extends BaseActivity implements View.OnClickLis
                 intent.putExtra("alt", hotMovieDetailBean.getAlt());
                 startActivity(intent);
                 break;
+            case R.id.iv_detail_share:
+                showShare();
+                break;
         }
+    }
+
+    private void showShare() {
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+
+        // 分享时Notification的图标和文字  2.5.9以后的版本不     调用此方法
+        //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+        oks.setTitle(getString(R.string.share));
+        // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+        oks.setTitleUrl("http://sharesdk.cn");
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText(hotMovieDetailBean.getTitle());
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        oks.setImagePath(hotMovieDetailBean.getImages().getLarge());//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl("http://sharesdk.cn");
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("豆瓣电影");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite(getString(R.string.app_name));
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl("http://sharesdk.cn");
+
+        // 启动分享GUI
+        oks.show(this);
     }
 
     private void setListViewAdapter() {

@@ -1,8 +1,10 @@
 package com.leyifu.doubandemo.acticity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -47,6 +50,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ViewPager main_view_pager;
     private FragmentManager fragmentManager;
     private CircleImageView nav_head_viecle;
+    private String name;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         main_view_pager = ((ViewPager) findViewById(R.id.main_view_pager));
         tool_bar.setTitle("");
         setSupportActionBar(tool_bar);
+
+
     }
 
     private void init() {
@@ -90,6 +97,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         main_view_pager.addOnPageChangeListener(pageChangeListener);
 
         iv_drawable.setOnClickListener(this);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String name = sharedPreferences.getString("name", null);
+        String password = sharedPreferences.getString("password", null);
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
+            ShowUtil.toast(this, "登陆成功");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        name = sharedPreferences.getString("name", null);
+        password = sharedPreferences.getString("password", null);
     }
 
     ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -160,12 +182,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                    startActivity(new Intent(MainActivity.this, HomeActivity.class));
+
+                    if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
+                        startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                    } else {
+                        startActivity(new Intent(MainActivity.this, LandAndRegistActivity.class));
+                    }
                     break;
                 case R.id.nav_suggest:
-                    startActivity(new Intent(MainActivity.this, SuggestActivity.class));
+                    if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
+                        startActivity(new Intent(MainActivity.this, SuggestActivity.class));
+                    } else {
+                        startActivity(new Intent(MainActivity.this, LandAndRegistActivity.class));
+                    }
+
                     break;
                 case R.id.nav_theme:
                     ShowUtil.toast(MainActivity.this, "nav_theme");
@@ -179,8 +212,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 case R.id.nav_about:
                     ShowUtil.toast(MainActivity.this, "nav_about");
                     break;
-
-
             }
             return true;
         }
@@ -194,7 +225,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 drawer_layout.openDrawer(GravityCompat.START);
                 break;
             case R.id.nav_head_circle:
-                startActivity(new Intent(this,LandAndRegistActivity.class));
+
+                if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
+                    startActivity(new Intent(MainActivity.this, ExitLogInActivity.class));
+                } else {
+                    startActivity(new Intent(MainActivity.this, LandAndRegistActivity.class));
+                }
                 break;
         }
     }

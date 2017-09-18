@@ -27,9 +27,11 @@
         我知道有一天他会在一个万众瞩目的情况下出现\n\n
         身披金甲圣衣 脚踏七彩祥云来娶我！！！\n\n
     </string>
-    <string name="zixia">紫霞</string>
+    <string name="zixia">意中人</string>
     <string name="other_way_land">其他方式登陆</string>
     <string name="new_user_regist">新用户注册</string>
     <string name="forget_password">忘记密码</string>
     <string name="land">登陆</string>
+    <string name="exit_land">退出登陆</string>
+    <string name="share">分享</string>
 </resources>
