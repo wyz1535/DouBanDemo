@@ -90,19 +90,19 @@
     <Wechat
         Id="4"
         SortId="4"
-        AppId="wx4868b35061f87885"
-        AppSecret="64020361b8ec4c99936c0e3999a9f249"
+        AppId="wx3e444c53bfc03933"
+        AppSecret="37c03fc242fced9cfae67986163bee35"
 		userName="gh_afb25ac019c9"
 		path="pages/index/index.html?id=1"
-        BypassApproval="true"
+        BypassApproval="false"
         Enable="true" />
     
     <WechatMoments
         Id="5"
         SortId="5"
-        AppId="wx4868b35061f87885"
-        AppSecret="64020361b8ec4c99936c0e3999a9f249"
-        BypassApproval="true"
+        AppId="wx3e444c53bfc03933"
+        AppSecret="37c03fc242fced9cfae67986163bee35"
+        BypassApproval="false"
         Enable="true" />
         
 	<WechatFavorite
@@ -121,7 +121,7 @@
 		AppKey="aed9b0303e3ed1e27bae87c33761161d"
 		BypassApproval="true"
         ShareByAppClient="true"
-        Enable="true" />
+        Enable="false" />
 
     <Facebook
         Id="8"

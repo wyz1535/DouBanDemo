@@ -1,7 +1,6 @@
 package com.leyifu.doubandemo.acticity;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -38,10 +37,10 @@ public class HomeActivity extends BaseActivity {
 
         setSupportActionBar(toolBar);
         collapsingToolbarLayout.setTitle("此生为你");
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+//        ActionBar actionBar = getActionBar();
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
 
         handleMaterialStatusBar();
     }

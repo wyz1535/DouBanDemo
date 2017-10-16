@@ -56,7 +56,8 @@ public class DouBanPersenter {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        ShowUtil.toast(context, "网络错误");
+                        ShowUtil.toast(context, "网络错误...");
+                        igetTop250View.getTopFaild();
                     }
                 });
     }

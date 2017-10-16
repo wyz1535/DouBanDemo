@@ -35,8 +35,8 @@ public class HotMovieFragment extends Fragment {
 
     private static final int SUCCEES = 0;
     private static final int DEFEATED = 1;
-    private String TAG = "HotMovieFragment";
     String url = Constants.URL + "v2/movie/in_theaters";
+    private String TAG = "HotMovieFragment";
     private SwipeRefreshLayout hot_movie_swipe;
     private RecyclerView hot_movie_recycle_view;
     private HotMovieAdapter hotMovieAdapter;

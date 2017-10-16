@@ -34,7 +34,6 @@ public class Top250Fragment extends Fragment implements IgetTop250View {
     private RecyclerView lv_top250;
     private int pageCount;
     private int PAGE_SIZE = 10;
-    private static final String URL = Constants.URL + "v2/movie/top250";
     private LinearLayoutManager linearLayoutManager;
     private Top250RecyclerAdapter adapter;
 
@@ -58,6 +57,11 @@ public class Top250Fragment extends Fragment implements IgetTop250View {
         lv_top250 = ((RecyclerView) view.findViewById(R.id.lv_top250));
         top250_swipe = ((SwipeRefreshLayout) view.findViewById(R.id.top250_swipe));
         floatingActionButton = ((FloatingActionButton) view.findViewById(R.id.floatingActionButton));
+    }
+
+    private void initData() {
+        douBanPersenter = new DouBanPersenter(getActivity());
+        douBanPersenter.getTop250(this, DouBanApi.class, pageCount * PAGE_SIZE, PAGE_SIZE, false);
     }
 
     private void init() {
@@ -141,10 +145,7 @@ public class Top250Fragment extends Fragment implements IgetTop250View {
     };
 
 
-    private void initData() {
-        douBanPersenter = new DouBanPersenter(getActivity());
-        douBanPersenter.getTop250(this, DouBanApi.class, pageCount * PAGE_SIZE, PAGE_SIZE, false);
-    }
+
 
     @Override
     public void getTop250Success(Top250Bean top250Bean, boolean isLoadMore) {

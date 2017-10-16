@@ -45,4 +45,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.8.1'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile 'com.lorentzos.swipecards:library:1.0.9'
+//    compile 'com.huxq17.android:SwipeCardsView:0.0.5'
 }

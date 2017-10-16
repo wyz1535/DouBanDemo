@@ -59,9 +59,11 @@ public class MovieFragment extends Fragment implements ViewPager.OnPageChangeLis
         int width =tool_bar.getMeasuredWidth();
         Log.e("measuredHeight", "height="+height+"&measuredHeight="+ width);
 
+//        fragments.add(new PictureFragment());
         fragments.add(new HotMovieFragment());
         fragments.add(new Top250Fragment());
 
+//        titles.add("picture");
         titles.add("热映榜");
         titles.add("TOP250");
 
@@ -69,6 +71,7 @@ public class MovieFragment extends Fragment implements ViewPager.OnPageChangeLis
 
         tab_layout.setTag(tab_layout.newTab().setText(titles.get(0)));
         tab_layout.setTag(tab_layout.newTab().setText(titles.get(1)));
+//        tab_layout.setTag(tab_layout.newTab().setText(titles.get(2)));
         view_pager_movie.setAdapter(new MovieAdapter(supportFragmentManager, fragments, titles));
         view_pager_movie.setOffscreenPageLimit(3);
         tab_layout.setupWithViewPager(view_pager_movie);
